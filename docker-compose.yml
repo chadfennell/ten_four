@@ -1,0 +1,27 @@
+version: "3.3"
+services:
+  postgres:
+    image: postgres:15.2
+    volumes:
+      - db-data-pg-14:/var/lib/postgresql_14/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=friends_dev
+    ports:
+      - "127.0.0.1:5432:5432"
+    command: [ "postgres", "-c", "log_statement=all" ]
+
+  typesense:
+    image: typesense/typesense:0.24.0
+    ports:
+      - "127.0.0.1:8108:8108"
+    volumes:
+      - typesense:/data
+    command: "--data-dir /data --api-key=goodbuddyniner --enable-cors"
+
+volumes:
+  db-data-pg-14:
+    driver: local
+  typesense:
+    driver: local
